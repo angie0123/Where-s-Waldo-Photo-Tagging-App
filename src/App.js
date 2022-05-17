@@ -1,5 +1,7 @@
+import Photo from './components/Photo';
+
 function App() {
-  return <>Hello From App!</>;
+  return <Photo />;
 }
 
 export default App;
