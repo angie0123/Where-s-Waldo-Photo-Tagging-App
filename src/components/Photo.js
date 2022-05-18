@@ -5,7 +5,7 @@ const Photo = ({
   handleClick,
   displayMenu,
   handleSubmitAnswer,
-  characterList,
+  toFindCharacterList,
 }) => {
   return (
     <div
@@ -25,7 +25,7 @@ const Photo = ({
           xPos={displayMenu.x}
           yPos={displayMenu.y}
           handleSubmitAnswer={handleSubmitAnswer}
-          characterList={characterList}
+          toFindCharacterList={toFindCharacterList}
         />
       )}
     </div>

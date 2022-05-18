@@ -1,4 +1,4 @@
-const Dropdown = ({ xPos, yPos, handleSubmitAnswer, characterList }) => {
+const Dropdown = ({ xPos, yPos, handleSubmitAnswer, toFindCharacterList }) => {
   return (
     <div
       className="dropdown"
@@ -12,7 +12,7 @@ const Dropdown = ({ xPos, yPos, handleSubmitAnswer, characterList }) => {
       }}
     >
       <ul>
-        {characterList.map((name, index) => {
+        {toFindCharacterList.map((name, index) => {
           return (
             <li key={index} data-name={name} onClick={handleSubmitAnswer}>
               {name}

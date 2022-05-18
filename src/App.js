@@ -15,31 +15,42 @@ function App() {
   const [displayMenu, setDisplayMenu] = useState(null);
   const [marker, setMarker] = useState(null);
   const [characterList, setCharacterList] = useState([]);
+  const [foundCharacters, setFoundCharacters] = useState([]);
   const [timer, setTimer] = useState(0);
   const intervalRef = useRef(null);
-  const [gameover, setGameover] = useState(false);
   const [highScores, setHighScores] = useState([]);
+  const [popUpDisplay, setPopupDisplay] = useState(null);
 
   useEffect(() => {
-    onSnapshot(collection(getFirestore(), 'highscores'), (snapshot) => {
-      let dbHighScores = [];
-      snapshot.forEach((doc) => {
-        dbHighScores.push(doc.data());
-      });
-      setHighScores(dbHighScores);
-    });
-    onSnapshot(collection(getFirestore(), 'beach'), (snapshot) => {
-      let dbSolution = [];
-      snapshot.forEach((doc) => {
-        dbSolution.push(doc.data());
-      });
-      setSolution(dbSolution);
-      setCharacterList(dbSolution.map((character) => character.name));
-    });
+    const unsubScore = onSnapshot(
+      collection(getFirestore(), 'highscores'),
+      (snapshot) => {
+        let dbHighScores = [];
+        snapshot.forEach((doc) => {
+          dbHighScores.push(doc.data());
+        });
+        setHighScores(dbHighScores);
+      }
+    );
+    const unsubSolution = onSnapshot(
+      collection(getFirestore(), 'beach'),
+      (snapshot) => {
+        let dbSolution = [];
+        snapshot.forEach((doc) => {
+          dbSolution.push(doc.data());
+        });
+        setSolution(dbSolution);
+        setCharacterList(dbSolution.map((character) => character.name));
+      }
+    );
     intervalRef.current = setInterval(() => {
       setTimer((prev) => prev + 1);
     }, 1000);
-    return () => clearInterval(intervalRef.current);
+    return () => {
+      clearInterval(intervalRef.current);
+      unsubScore();
+      unsubSolution();
+    };
   }, []);
 
   const clickHandler = (event) => {
@@ -61,24 +72,31 @@ function App() {
 
     if (x >= minX && x <= maxX && y >= minY && y <= maxY) {
       setMarker(character.name);
-      if (characterList.length === 1) {
+      if (foundCharacters.length === 1) {
+        //game over
+        console.log(intervalRef.current);
         clearInterval(intervalRef.current);
         setTimeout(() => {
-          setGameover(true);
+          renderPopup();
         }, 4000);
       }
-      setCharacterList((prev) =>
-        prev.filter((character) => character !== name)
-      );
+      setFoundCharacters((prev) => [...prev, name]);
       setTimeout(() => {
         setMarker(null);
       }, 3000);
     }
   };
 
+  const renderPopup = () => {
+    const sortedScores = highScores.sort((a, b) => a.score - b.score);
+    sortedScores.length < 10 ||
+    timer < sortedScores[sortedScores.length - 1].score
+      ? setPopupDisplay('form')
+      : setPopupDisplay('play again');
+  };
+
   const submitHandler = async (event, input) => {
     event.preventDefault();
-    console.log(input);
     try {
       await addDoc(collection(getFirestore(), 'highscores'), {
         score: timer,
@@ -88,15 +106,28 @@ function App() {
     } catch (error) {
       console.error('Something went wrong writing to Firebase database', error);
     }
+    setPopupDisplay('play again');
+  };
+
+  const playAgainHandler = () => {
+    setFoundCharacters([]);
+    setPopupDisplay(null);
+    setTimer(0);
+    intervalRef.current = setInterval(() => {
+      setTimer((prev) => prev + 1);
+    }, 1000);
+    console.log(intervalRef.current);
   };
 
   return (
     <>
-      {gameover && (
+      {popUpDisplay && (
         <Popup
           timer={timer}
-          highscores={highScores}
+          sortedScores={highScores.sort((a, b) => a.score - b.score)}
           submitHandler={submitHandler}
+          displayMode={popUpDisplay}
+          playAgainHandler={playAgainHandler}
         />
       )}
       <Nav timer={timer} />
@@ -105,7 +136,9 @@ function App() {
         handleClick={clickHandler}
         displayMenu={displayMenu}
         handleSubmitAnswer={submitAnswerHandler}
-        characterList={characterList}
+        toFindCharacterList={characterList.filter(
+          (character) => !foundCharacters.includes(character)
+        )}
       />
     </>
   );
