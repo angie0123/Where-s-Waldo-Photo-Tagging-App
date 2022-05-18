@@ -6,6 +6,9 @@ import {
   collection,
   addDoc,
   serverTimestamp,
+  orderBy,
+  limit,
+  query,
 } from 'firebase/firestore';
 import Nav from './components/Nav';
 import Popup from './components/Popup';
@@ -22,16 +25,15 @@ function App() {
   const [popUpDisplay, setPopupDisplay] = useState(null);
 
   useEffect(() => {
-    const unsubScore = onSnapshot(
-      collection(getFirestore(), 'highscores'),
-      (snapshot) => {
-        let dbHighScores = [];
-        snapshot.forEach((doc) => {
-          dbHighScores.push(doc.data());
-        });
-        setHighScores(dbHighScores);
-      }
-    );
+    const scoresRef = collection(getFirestore(), 'highscores');
+    const scoreQuery = query(scoresRef, orderBy('score', 'asc'), limit(10));
+    const unsubScore = onSnapshot(scoreQuery, (snapshot) => {
+      let dbHighScores = [];
+      snapshot.forEach((doc) => {
+        dbHighScores.push(doc.data());
+      });
+      setHighScores(dbHighScores);
+    });
     const unsubSolution = onSnapshot(
       collection(getFirestore(), 'beach'),
       (snapshot) => {
@@ -88,9 +90,7 @@ function App() {
   };
 
   const renderPopup = () => {
-    const sortedScores = highScores.sort((a, b) => a.score - b.score);
-    sortedScores.length < 10 ||
-    timer < sortedScores[sortedScores.length - 1].score
+    highScores.length < 10 || timer < highScores[highScores.length - 1].score
       ? setPopupDisplay('form')
       : setPopupDisplay('play again');
   };
@@ -124,7 +124,7 @@ function App() {
       {popUpDisplay && (
         <Popup
           timer={timer}
-          sortedScores={highScores.sort((a, b) => a.score - b.score)}
+          highScores={highScores}
           submitHandler={submitHandler}
           displayMode={popUpDisplay}
           playAgainHandler={playAgainHandler}

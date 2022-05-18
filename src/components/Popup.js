@@ -3,7 +3,7 @@ import Scoretable from './Highscores';
 
 const Popup = ({
   timer,
-  sortedScores,
+  highScores,
   submitHandler,
   displayMode,
   playAgainHandler,
@@ -26,7 +26,7 @@ const Popup = ({
       {displayMode === 'form' && (
         <Form score={timer} submitHandler={submitHandler} />
       )}
-      <Scoretable scores={sortedScores} parseTimer={parseTimer} />
+      <Scoretable scores={highScores} parseTimer={parseTimer} />
     </>
   );
 };
