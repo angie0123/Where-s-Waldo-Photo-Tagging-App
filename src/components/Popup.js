@@ -5,10 +5,11 @@ const Popup = ({ timer }) => {
     return [minutes, seconds];
   };
   const [minutes, seconds] = parseTimer();
-
-  <>
-    Your score is {minutes}m : {seconds} s
-  </>;
+  return (
+    <div>
+      Your score is {minutes}m : {seconds} s
+    </div>
+  );
 };
 
 export default Popup;
