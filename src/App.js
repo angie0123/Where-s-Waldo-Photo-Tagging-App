@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import Photo from './components/Photo';
 import { onSnapshot, getFirestore, collection } from 'firebase/firestore';
 import Nav from './components/Nav';
+import Popup from './components/Popup';
 
 function App() {
   const [solution, setSolution] = useState([]);
@@ -9,7 +10,8 @@ function App() {
   const [marker, setMarker] = useState(null);
   const [characterList, setCharacterList] = useState([]);
   const [timer, setTimer] = useState(0);
-  const intervalRef = useRef(0);
+  const intervalRef = useRef(null);
+  const [gameover, setGameover] = useState(false);
 
   useEffect(() => {
     onSnapshot(collection(getFirestore(), 'beach'), (snapshot) => {
@@ -24,7 +26,7 @@ function App() {
       setTimer((prev) => prev + 1);
     }, 1000);
     return () => clearInterval(intervalRef.current);
-  }, [timer]);
+  }, []);
 
   const clickHandler = (event) => {
     if (displayMenu === null) {
@@ -45,15 +47,24 @@ function App() {
 
     if (x >= minX && x <= maxX && y >= minY && y <= maxY) {
       setMarker(character.name);
-      setCharacterList(characterList.filter((character) => character !== name));
+      if (characterList.length === 1) {
+        clearInterval(intervalRef.current);
+        setTimeout(() => {
+          setGameover(true);
+        }, 4000);
+      }
+      setCharacterList((prev) =>
+        prev.filter((character) => character !== name)
+      );
       setTimeout(() => {
         setMarker(null);
-      }, 5000);
+      }, 3000);
     }
   };
 
   return (
     <>
+      {gameover && <Popup timer={timer} />}
       <Nav timer={timer} />
       {marker && <div>You just found {marker}</div>}
       <Photo
