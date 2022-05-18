@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
 import Photo from './components/Photo';
 import { onSnapshot, getFirestore, collection } from 'firebase/firestore';
-
 function App() {
   const [solution, setSolution] = useState([]);
   const [displayMenu, setDisplayMenu] = useState(null);
+  const [marker, setMarker] = useState(false);
   useEffect(() => {
     onSnapshot(collection(getFirestore(), 'characters'), (snapshot) => {
       let dbSolution = [];
@@ -28,22 +28,24 @@ function App() {
 
   const submitAnswerHandler = (event) => {
     const { minX, minY, maxX, maxY } = solution[0];
-    console.log(solution);
     const { x, y } = displayMenu;
     if (x >= +minX && x <= +maxX && y >= +minY && y <= +maxY) {
-      console.log('acceptable');
-    } else {
+      setMarker(true);
+      setTimeout(() => {
+        setMarker(false);
+      }, 5000);
     }
-    console.log({ x, y });
-    console.log({ minX, minY, maxX, maxY });
   };
 
   return (
-    <Photo
-      handleClick={clickHandler}
-      displayMenu={displayMenu}
-      handleSubmitAnswer={submitAnswerHandler}
-    />
+    <>
+      {marker && <div> You just found Waldo! </div>}
+      <Photo
+        handleClick={clickHandler}
+        displayMenu={displayMenu}
+        handleSubmitAnswer={submitAnswerHandler}
+      />
+    </>
   );
 }
 
