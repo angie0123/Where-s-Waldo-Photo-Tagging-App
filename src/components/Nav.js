@@ -7,7 +7,7 @@ const Nav = ({ timer }) => {
   const [minutes, seconds] = parseTimer();
   return (
     <>
-      {minutes}m : {seconds}s{' '}
+      {minutes}m {seconds}s{' '}
     </>
   );
 };

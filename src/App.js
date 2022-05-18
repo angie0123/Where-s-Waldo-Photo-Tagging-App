@@ -12,8 +12,16 @@ function App() {
   const [timer, setTimer] = useState(0);
   const intervalRef = useRef(null);
   const [gameover, setGameover] = useState(false);
+  const [highScores, setHighScores] = useState([]);
 
   useEffect(() => {
+    onSnapshot(collection(getFirestore(), 'highscores'), (snapshot) => {
+      let dbHighScores = [];
+      snapshot.forEach((doc) => {
+        dbHighScores.push(doc.data());
+      });
+      setHighScores(dbHighScores);
+    });
     onSnapshot(collection(getFirestore(), 'beach'), (snapshot) => {
       let dbSolution = [];
       snapshot.forEach((doc) => {
@@ -64,7 +72,7 @@ function App() {
 
   return (
     <>
-      {gameover && <Popup timer={timer} />}
+      {gameover && <Popup timer={timer} highscores={highScores} />}
       <Nav timer={timer} />
       {marker && <div>You just found {marker}</div>}
       <Photo
