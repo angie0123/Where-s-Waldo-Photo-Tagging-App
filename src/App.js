@@ -1,11 +1,15 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Photo from './components/Photo';
 import { onSnapshot, getFirestore, collection } from 'firebase/firestore';
+import Nav from './components/Nav';
+
 function App() {
   const [solution, setSolution] = useState([]);
   const [displayMenu, setDisplayMenu] = useState(null);
   const [marker, setMarker] = useState(null);
   const [characterList, setCharacterList] = useState([]);
+  const [timer, setTimer] = useState(0);
+  const intervalRef = useRef(0);
 
   useEffect(() => {
     onSnapshot(collection(getFirestore(), 'beach'), (snapshot) => {
@@ -16,7 +20,11 @@ function App() {
       setSolution(dbSolution);
       setCharacterList(dbSolution.map((character) => character.name));
     });
-  }, []);
+    intervalRef.current = setInterval(() => {
+      setTimer((prev) => prev + 1);
+    }, 1000);
+    return () => clearInterval(intervalRef.current);
+  }, [timer]);
 
   const clickHandler = (event) => {
     if (displayMenu === null) {
@@ -46,6 +54,7 @@ function App() {
 
   return (
     <>
+      <Nav timer={timer} />
       {marker && <div>You just found {marker}</div>}
       <Photo
         handleClick={clickHandler}
