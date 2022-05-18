@@ -1,7 +1,12 @@
-import image from '../images/waldo-beach.png';
+import image from '../images/beach.jpg';
 import Dropdown from './Dropdown';
 
-const Photo = ({ handleClick, displayMenu, handleSubmitAnswer }) => {
+const Photo = ({
+  handleClick,
+  displayMenu,
+  handleSubmitAnswer,
+  characterList,
+}) => {
   return (
     <div
       className="photo-container"
@@ -9,7 +14,7 @@ const Photo = ({ handleClick, displayMenu, handleSubmitAnswer }) => {
         backgroundImage: `url(${image})`,
         backgroundSize: 'cover',
         height: '800px',
-        width: '1100px',
+        width: '90vw',
         margin: '0 auto',
         position: 'relative',
       }}
@@ -20,6 +25,7 @@ const Photo = ({ handleClick, displayMenu, handleSubmitAnswer }) => {
           xPos={displayMenu.x}
           yPos={displayMenu.y}
           handleSubmitAnswer={handleSubmitAnswer}
+          characterList={characterList}
         />
       )}
     </div>

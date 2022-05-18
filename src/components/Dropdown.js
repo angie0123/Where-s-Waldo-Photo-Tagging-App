@@ -1,4 +1,4 @@
-const Dropdown = ({ xPos, yPos, handleSubmitAnswer }) => {
+const Dropdown = ({ xPos, yPos, handleSubmitAnswer, characterList }) => {
   return (
     <div
       className="dropdown"
@@ -10,9 +10,16 @@ const Dropdown = ({ xPos, yPos, handleSubmitAnswer }) => {
         width: '50px',
         position: 'absolute',
       }}
-      onClick={handleSubmitAnswer}
     >
-      Waldo
+      <ul>
+        {characterList.map((name, index) => {
+          return (
+            <li key={index} data-name={name} onClick={handleSubmitAnswer}>
+              {name}
+            </li>
+          );
+        })}
+      </ul>
     </div>
   );
 };
