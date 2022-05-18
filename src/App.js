@@ -12,6 +12,7 @@ import {
 } from 'firebase/firestore';
 import Nav from './components/Nav';
 import Popup from './components/Popup';
+import './styles.css';
 
 function App() {
   const [solution, setSolution] = useState([]);
