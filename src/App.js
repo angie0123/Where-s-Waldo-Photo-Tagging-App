@@ -1,6 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
 import Photo from './components/Photo';
-import { onSnapshot, getFirestore, collection } from 'firebase/firestore';
+import {
+  onSnapshot,
+  getFirestore,
+  collection,
+  addDoc,
+  serverTimestamp,
+} from 'firebase/firestore';
 import Nav from './components/Nav';
 import Popup from './components/Popup';
 
@@ -70,9 +76,29 @@ function App() {
     }
   };
 
+  const submitHandler = async (event, input) => {
+    event.preventDefault();
+    console.log(input);
+    try {
+      await addDoc(collection(getFirestore(), 'highscores'), {
+        score: timer,
+        name: input,
+        timestamp: serverTimestamp(),
+      });
+    } catch (error) {
+      console.error('Something went wrong writing to Firebase database', error);
+    }
+  };
+
   return (
     <>
-      {gameover && <Popup timer={timer} highscores={highScores} />}
+      {gameover && (
+        <Popup
+          timer={timer}
+          highscores={highScores}
+          submitHandler={submitHandler}
+        />
+      )}
       <Nav timer={timer} />
       {marker && <div>You just found {marker}</div>}
       <Photo
