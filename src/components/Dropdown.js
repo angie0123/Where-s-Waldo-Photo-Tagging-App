@@ -1,4 +1,4 @@
-const Dropdown = ({ xPos, yPos }) => {
+const Dropdown = ({ xPos, yPos, handleSubmitAnswer }) => {
   return (
     <div
       className="dropdown"
@@ -10,6 +10,7 @@ const Dropdown = ({ xPos, yPos }) => {
         width: '50px',
         position: 'absolute',
       }}
+      onClick={handleSubmitAnswer}
     >
       Waldo
     </div>
