@@ -1,6 +1,7 @@
 import image from '../images/waldo-beach.png';
+import Dropdown from './Dropdown';
 
-const Photo = () => {
+const Photo = ({ handleClick, displayMenu }) => {
   return (
     <div
       className="photo-container"
@@ -10,8 +11,12 @@ const Photo = () => {
         height: '1000px',
         width: '1400px',
         margin: '0 auto',
+        position: 'relative',
       }}
-    ></div>
+      onClick={handleClick}
+    >
+      {displayMenu && <Dropdown xPos={displayMenu.x} yPos={displayMenu.y} />}
+    </div>
   );
 };
 
