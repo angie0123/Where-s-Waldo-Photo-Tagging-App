@@ -74,7 +74,7 @@ function App() {
 
     if (x >= minX && x <= maxX && y >= minY && y <= maxY) {
       setMarker(character.name);
-      if (foundCharacters.length === 1) {
+      if (foundCharacters.length === characterList.length - 1) {
         //game over
         console.log(intervalRef.current);
         clearInterval(intervalRef.current);
