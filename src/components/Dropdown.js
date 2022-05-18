@@ -5,10 +5,6 @@ const Dropdown = ({ xPos, yPos, handleSubmitAnswer, toFindCharacterList }) => {
       style={{
         top: `${yPos}px`,
         left: `${xPos}px`,
-        backgroundColor: 'yellow',
-        zIndex: '99',
-        width: '50px',
-        position: 'absolute',
       }}
     >
       <ul>

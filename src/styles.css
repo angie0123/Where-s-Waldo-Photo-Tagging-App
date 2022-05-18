@@ -5,6 +5,10 @@
 }
 
 nav {
+  position: sticky;
+  top: 0;
+  z-index: 99;
+  background-color: white;
   height: 100px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -24,4 +28,20 @@ nav img {
 
 nav .timer {
   justify-self: end;
+}
+
+.dropdown {
+  background-color: white;
+  border: 1px solid black;
+  padding: 5px;
+  width: 150px;
+  position: absolute;
+}
+
+ul li {
+  list-style: none;
+}
+ul li:hover {
+  cursor: pointer;
+  background-color: lightblue;
 }
