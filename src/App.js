@@ -132,7 +132,7 @@ function App() {
         />
       )}
       <Nav timer={timer} />
-      {marker && <div>You just found {marker}</div>}
+      {marker && <div className="marker">You just found {marker}!</div>}
       <Photo
         handleClick={clickHandler}
         displayMenu={displayMenu}

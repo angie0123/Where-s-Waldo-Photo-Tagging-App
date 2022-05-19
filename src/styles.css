@@ -45,3 +45,13 @@ ul li:hover {
   cursor: pointer;
   background-color: lightblue;
 }
+
+.marker {
+  position: absolute;
+  z-index: 99;
+  width: 100%;
+  background-color: green;
+  color: white;
+  padding: 5px;
+  text-align: center;
+}
