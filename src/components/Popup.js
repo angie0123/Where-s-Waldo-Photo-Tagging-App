@@ -17,16 +17,22 @@ const Popup = ({
 
   return (
     <>
-      <div>
-        Your score is {minutes}m {seconds}s
+      <div className="modal">
+        <div className="modal-content">
+          <div>
+            Your score is {minutes}m {seconds}s
+          </div>
+          {displayMode === 'play again' && (
+            <div className="button" onClick={playAgainHandler}>
+              Play Again
+            </div>
+          )}
+          {displayMode === 'form' && (
+            <Form score={timer} submitHandler={submitHandler} />
+          )}
+          <Scoretable scores={highScores} parseTimer={parseTimer} />
+        </div>
       </div>
-      {displayMode === 'play again' && (
-        <div onClick={playAgainHandler}>Play Again</div>
-      )}
-      {displayMode === 'form' && (
-        <Form score={timer} submitHandler={submitHandler} />
-      )}
-      <Scoretable scores={highScores} parseTimer={parseTimer} />
     </>
   );
 };

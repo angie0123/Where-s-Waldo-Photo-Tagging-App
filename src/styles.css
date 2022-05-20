@@ -2,6 +2,7 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  font-size: 14px;
 }
 
 nav {
@@ -41,7 +42,7 @@ nav .timer {
 ul li {
   list-style: none;
 }
-ul li:hover {
+.dropdown ul li:hover {
   cursor: pointer;
   background-color: lightblue;
 }
@@ -54,4 +55,79 @@ ul li:hover {
   color: white;
   padding: 5px;
   text-align: center;
+}
+
+.modal {
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  z-index: 999;
+}
+
+.modal-content {
+  background-color: rgb(255, 255, 255);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid black;
+  text-align: center;
+  width: 500px;
+  margin: 0 auto;
+  margin-top: 20vh;
+  gap: 10px;
+}
+
+form button,
+form input {
+  all: unset;
+}
+
+.button {
+  box-sizing: border-box;
+  background-color: rgb(30, 131, 60);
+  color: white;
+  padding: 5px;
+  border-radius: 7px;
+}
+
+.button:hover {
+  cursor: pointer;
+}
+
+form input {
+  border: 1px solid black;
+  padding: 5px;
+  margin-right: 10px;
+  text-align: left;
+}
+
+.highscores {
+  width: 350px;
+}
+
+.highscores .heading {
+  padding: 20px;
+}
+
+.highscores ul {
+  border-top: 1px solid black;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+}
+
+.highscores ul li {
+  border-bottom: 1px solid black;
+}
+
+.highscores .labels {
+  font-weight: bold;
+  background-color: grey;
+}
+
+.highscores li {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px;
 }
